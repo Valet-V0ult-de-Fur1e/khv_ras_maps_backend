@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-GDAL_LIBRARY_PATH = "C:/Users/EGOR/Desktop/work/ВЦ ДВО РАН maps/venv/Lib/site-packages/osgeo/gdal304.dll"
+GDAL_LIBRARY_PATH = ".venv\\Lib\\site-packages\\osgeo\\gdal304.dll"
+GEOS_LIBRARY_PATH = ".venv\\Lib\\site-packages\\osgeo\\geos_c.dll"
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "leaflet",
-    'django.contrib.gis',
+    "django.contrib.gis",
     "markers"
 ]
 
@@ -92,17 +93,17 @@ DATABASES = {
         'HOST': '195.133.198.89',
         'PORT': '5432'
     },
-    "khvDB2": {
-        "ENGINE": "django.contrib.gis.db.backends.postgis",
-        'OPTIONS': {
-            'options': '-c search_path=2022'
-        },
-        'NAME': 'khv',
-        'USER': 'read',
-        'PASSWORD': '1234567',
-        'HOST': '195.133.198.89',
-        'PORT': '5432'
-    }
+    # "khvDB2": {
+    #     "ENGINE": "django.contrib.gis.db.backends.postgis",
+    #     'OPTIONS': {
+    #         'options': '-c search_path=2022'
+    #     },
+    #     'NAME': 'khv',
+    #     'USER': 'read',
+    #     'PASSWORD': '1234567',
+    #     'HOST': '195.133.198.89',
+    #     'PORT': '5432'
+    # }
 }
 
 
