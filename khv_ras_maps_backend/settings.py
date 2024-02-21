@@ -93,17 +93,17 @@ DATABASES = {
         'HOST': '195.133.198.89',
         'PORT': '5432'
     },
-    # "khvDB2": {
-    #     "ENGINE": "django.contrib.gis.db.backends.postgis",
-    #     'OPTIONS': {
-    #         'options': '-c search_path=2022'
-    #     },
-    #     'NAME': 'khv',
-    #     'USER': 'read',
-    #     'PASSWORD': '1234567',
-    #     'HOST': '195.133.198.89',
-    #     'PORT': '5432'
-    # }
+    "khvDB2": {
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        'OPTIONS': {
+            'options': '-c search_path=2022'
+        },
+        'NAME': 'khv',
+        'USER': 'read',
+        'PASSWORD': '1234567',
+        'HOST': '195.133.198.89',
+        'PORT': '5432'
+    }
 }
 
 
