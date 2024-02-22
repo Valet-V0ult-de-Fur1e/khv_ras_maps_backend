@@ -24,7 +24,7 @@ class MarkersMapView(TemplateView):
         context["markers"] = json.loads(
             serialize(
                 "geojson",
-                y2019ListOfFields.objects.using('khvDB').all(),
+                y2019ListOfFields.objects.using('khvDB2019').all(),
             )
         )
         return context
@@ -44,13 +44,13 @@ class MarkersMapViewTwoLayers(TemplateView):
         context["markers2019"] = json.loads(
             serialize(
                 "geojson",
-                y2019ListOfFields.objects.using('khvDB').all(),
+                y2019ListOfFields.objects.using('khvDB2019').all(),
             )
         )
         context["markers2022"] = json.loads(
             serialize(
                 "geojson",
-                y2022ListOfFields.objects.using('khvDB2').all(),
+                y2020ListOfFields.objects.using('khvDB2020').all(),
             )
         )
         return context

@@ -76,35 +76,34 @@ WSGI_APPLICATION = "khv_ras_maps_backend.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+LIST_REGIONS = ['khv']
+N_OF_YEARS = 5
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     },
-    "khvDB": {
-        "ENGINE": "django.contrib.gis.db.backends.postgis",
+}
+
+for i in range(5):
+    template_for_connection_postrgesql = {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'OPTIONS': {
-            'options': '-c search_path=2019'
+            'options': '-c search_path={year}'
         },
-        'NAME': 'khv',
-        'USER': 'read',
-        'PASSWORD': '1234567',
-        'HOST': '195.133.198.89',
-        'PORT': '5432'
-    },
-    "khvDB2": {
-        "ENGINE": "django.contrib.gis.db.backends.postgis",
-        'OPTIONS': {
-            'options': '-c search_path=2022'
-        },
-        'NAME': 'khv',
+        'NAME': '{reg}',
         'USER': 'read',
         'PASSWORD': '1234567',
         'HOST': '195.133.198.89',
         'PORT': '5432'
     }
-}
+    reg = "khv"
+    year = str(2019 + i)
+    name_db = reg + "DB" + year
+    DATABASES[name_db] = template_for_connection_postrgesql.copy()
+    DATABASES[name_db]["OPTIONS"]["options"] = DATABASES[name_db]["OPTIONS"]["options"].format(year=year)
+    DATABASES[name_db]["NAME"] = DATABASES[name_db]["NAME"].format(reg=reg)
 
 
 # Password validation
