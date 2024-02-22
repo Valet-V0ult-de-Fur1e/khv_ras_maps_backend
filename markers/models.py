@@ -1,11 +1,13 @@
 from __future__ import unicode_literals
 
+from khv_ras_maps_backend.settings import N_OF_YEARS
+
 from django.db import models
 from django.contrib.gis.db import models
 import datetime
 
 
-template_db_tabels = """
+template_db_tabels_1 = """
 class y{1}ListOfFields(models.Model):
     id = models.IntegerField(blank=True, primary_key=True)
     geom = models.MultiPolygonField()
@@ -36,10 +38,41 @@ class y{1}ListOfFields(models.Model):
         db_table = '{1}_list_of_fields'
 """
 
+template_db_tabels_2 = """
+class y{1}ListOfFields(models.Model):
+    id = models.IntegerField(blank=True, primary_key=True)
+    geom = models.MultiPolygonField()
+    reestr_number = models.CharField(blank=True, null=True, max_length=500)
+    comment = models.CharField(blank=True, null=True, max_length=500)
+    intern_number = models.CharField(blank=True, null=True, max_length=500)
+    id_district = models.IntegerField(blank=True, null=True)
+    id_owner = models.IntegerField(blank=True, null=True)
+    area = models.FloatField(blank=True, null=True)
+    id_type_usage_plan = models.IntegerField(blank=True, null=True)
+    id_type_usage_fact = models.IntegerField(blank=True, null=True)
+    id_crop_plan = models.IntegerField(blank=True, null=True)
+    id_crop_fact = models.IntegerField(blank=True, null=True)
+    id_crop_sort_plan = models.IntegerField(blank=True, null=True)
+    id_crop_sort_fact = models.IntegerField(blank=True, null=True)
+    biochem_fact = models.CharField(blank=True, null=True, max_length=500)
+    harvest_fact = models.FloatField(blank=True, null=True)
+    harvest_forecast = models.FloatField(blank=True, null=True)
+    pesticides = models.CharField(blank=True, null=True, max_length=500)
+    fertilizers = models.CharField(blank=True, null=True, max_length=500)
+    sowing_date = models.DateField(blank=True, null=True)
 
-for i in range(2):
+    class Meta:
+        managed = False
+        db_table = '{1}_list_of_fields'
+"""
+
+
+for i in range(N_OF_YEARS):
     year = str(2019 + i)
-    exec(template_db_tabels.format(year, year))
+    if year == "2020":
+        exec(template_db_tabels_2.format(year, year))
+    else:
+        exec(template_db_tabels_1.format(year, year))
 
 
 # class y2019Evi_20_1(models.Model):
