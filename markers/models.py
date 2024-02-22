@@ -37,7 +37,7 @@ class y{1}ListOfFields(models.Model):
 """
 
 
-for i in range(2):
+for i in range(5):
     year = str(2019 + i)
     exec(template_db_tabels.format(year, year))
 

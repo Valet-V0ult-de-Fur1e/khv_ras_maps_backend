@@ -5,55 +5,32 @@ const map = L.map('map')
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: attribution }).addTo(map);
 
 const markers = JSON.parse(document.getElementById('markers-data').textContent);
-
-let data = new Map();
-
+// console.log(markers.properties)
+let list_of_crop_sort = [];
+console.log(markers)
 markers['features'].forEach(element => {
-  if (!data[element.properties['id_crop_sort_fact']]) {
-    data[element.properties['id_crop_sort_fact']] = [];
+  if (list_of_crop_sort.indexOf(element.properties['id_crop_sort_fact']) == -1) {
+    list_of_crop_sort.push(element.properties['id_crop_sort_fact'])
   }
-  data[element.properties['id_crop_sort_fact']].push(element);
 });
-
-console.log(data)
-// let feature_list = []
-// data.forEach((values, keys) => {
-//   L.geoJSON(values, {style: getStyle()}).bindPopup(function (layer) { return layer.feature.properties.name; }).addTo(map)
-// }) 
-
-L.geoJSON(data['none'], {style: getStyle()}).bindPopup(function (layer) { return layer.feature.properties.name; }).addTo(map)
-
-console.log(feature_list)
-
-map.fitWorld();
-
-// map.fitBounds(feature_list.getBounds(), { padding: [100, 100] });
-console.log(getRandomArbitrary())
-// console.log(markers)
-
-// L.geoJson(markers)
-//   .on('click', function(e){
-//       var popLocation= e.latlng;
-//       var popup = L.popup()
-//       .setLatLng(popLocation)
-//       .setContent("polygon id:  " + JSON.stringify(e.sourceTarget.feature["id"]))
-//       .openOn(map);
-//       console.log(e.sourceTarget.feature);
-//   })
-//   .addTo(map)
-
-
-function getStyle() {
-  let color_str = "rgb(" + getRandomArbitrary() + ", " + getRandomArbitrary() + ", " + getRandomArbitrary() + ")"
-    return {
-      fillColor: 'black',
-      weight: 2,
-      opacity: 1,
-      color: 'black',  //Outline color
-      fillOpacity: 0.7
-    };
+let list_or_markers = [];
+for (let i = 0; i <= list_of_crop_sort.length; ++i) {
+  let marker = JSON.parse(document.getElementById('markers-data').textContent);
+  // console.log(marker.features.filter(item => item.properties['id_crop_sort_fact'] == list_of_crop_sort[i]))
+  marker.features = marker.features.filter(item => item.properties['id_crop_sort_fact'] == list_of_crop_sort[i])
+  
+  let year_rgb = getRandomArbitrary() + ", " + getRandomArbitrary() + ", " + getRandomArbitrary()
+  let feature = L.geoJSON(marker, {style: {
+    fillColor:"rgb(" + year_rgb + ")",
+    fillOpacity: 1
+  }}).addTo(map);
+  list_or_markers.push(feature);
 }
 
+console.log(list_of_crop_sort);
+
+// map.fitWorld();
+map.fitBounds(list_or_markers[0].getBounds(), { padding: [100, 100] });
 function getRandomArbitrary() {
   maximum = 255
   minimum = 0

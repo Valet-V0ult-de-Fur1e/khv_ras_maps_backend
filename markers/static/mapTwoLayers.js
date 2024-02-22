@@ -4,19 +4,19 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:
 const markers1 = JSON.parse(document.getElementById('markers-data-1').textContent);
 const markers2 = JSON.parse(document.getElementById('markers-data-2').textContent);
 // console.log(markers1)
-let feature1 = L.geoJSON(markers1).bindPopup(function (layer) { return layer.feature.properties.name; }).addTo(map);
+let first_year_rgb = getRandomArbitrary() + ", " + getRandomArbitrary() + ", " + getRandomArbitrary()
+let second_year_rgb = getRandomArbitrary() + ", " + getRandomArbitrary() + ", " + getRandomArbitrary()
+console.log(first_year_rgb)
+console.log(second_year_rgb)
+let feature1 = L.geoJSON(markers1, {style: {
+  fillColor:"rgb(" + first_year_rgb + ")",
+  fillOpacity: 1
+}}).addTo(map);
 let feature2 = L.geoJSON(markers2, {style: {
-      weight: 0.1,
-      opacity: 0.1,
-      fillColor: 'black',
-      color: 'black',
-      lineJoin: 'miter',
-      fillOpacity: 1,
-      offset: -4,
-      fillColor: "rgb(255, 0, 0)"
-    }
-  }
-).bindPopup(function (layer) { return layer.feature.properties.name; }).addTo(map);
+  fillColor:"rgb(" + second_year_rgb + ")",
+  fillOpacity: 1
+}}).addTo(map);
+// console.log(feature1)
 map.fitBounds(feature1.getBounds(), { padding: [100, 100] });
 
 L.geoJson(markers1)
@@ -48,3 +48,9 @@ L.geoJson(markers2)
     .openOn(map);
 })
 .addTo(map)
+
+function getRandomArbitrary() {
+  maximum = 255
+  minimum = 0
+  return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;;
+}

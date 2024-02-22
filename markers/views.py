@@ -7,7 +7,7 @@ from django.core.serializers import (
     serialize,
 )
 
-from markers.models import y2019ListOfFields, y2020ListOfFields
+from markers.models import *
 import json
 
 class MarkersMapView(TemplateView):
@@ -50,7 +50,7 @@ class MarkersMapViewTwoLayers(TemplateView):
         context["markers2022"] = json.loads(
             serialize(
                 "geojson",
-                y2020ListOfFields.objects.using('khvDB2').all(),
+                y2022ListOfFields.objects.using('khvDB2').all(),
             )
         )
         return context
