@@ -81,13 +81,20 @@ N_OF_YEARS = 5
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        'OPTIONS': {
+            'options': '-c search_path="Accounting",2019,2020,2021,2022,2023'
+        },
+        'NAME': 'khv',
+        'USER': 'read',
+        'PASSWORD': '1234567',
+        'HOST': '195.133.198.89',
+        'PORT': '5432'
     },
-    "KhvDbAccounting": {
+    "KhvDb": {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'OPTIONS': {
-            'options': '-c search_path=Accounting'
+            'options': '-c search_path="Accounting",2019,2020,2021,2022,2023'
         },
         'NAME': 'khv',
         'USER': 'read',
@@ -97,25 +104,6 @@ DATABASES = {
     }
 
 }
-
-for i in range(5):
-    template_for_connection_postrgesql = {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'OPTIONS': {
-            'options': '-c search_path={year}'
-        },
-        'NAME': '{reg}',
-        'USER': 'read',
-        'PASSWORD': '1234567',
-        'HOST': '195.133.198.89',
-        'PORT': '5432'
-    }
-    reg = "khv"
-    year = str(2019 + i)
-    name_db = reg.capitalize() + "Db" + year
-    DATABASES[name_db] = template_for_connection_postrgesql
-    DATABASES[name_db]["OPTIONS"]["options"] = DATABASES[name_db]["OPTIONS"]["options"].format(year=year)
-    DATABASES[name_db]["NAME"] = DATABASES[name_db]["NAME"].format(reg=reg)
 
 
 # Password validation

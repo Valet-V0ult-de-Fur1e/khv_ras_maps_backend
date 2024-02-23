@@ -1,9 +1,42 @@
 from django.views.generic.base import (TemplateView)
 import json
 from django.core.serializers import (serialize)
+from django.http import HttpResponse
 from markers.models import *
 import json
 from khv_ras_maps_backend.settings import N_OF_YEARS
+
+
+def JoinListOfCropsToFields(fields_json: dict) -> dict:
+    if type(fields_json) == str:
+        fields_json = json.loads(fields_json)
+    lst_of_crops_json = json.loads(serialize("geojson", ListOfCrops.objects.all().using("KhvDb")))
+    lst_of_crops_dict = dict()
+
+    print(lst_of_crops_json["features"])
+
+    for i in lst_of_crops_json["features"]:
+        print(i)
+        lst_of_crops_dict[i["id"]] = i["properties"]
+
+    for i in range(len(fields_json["features"])):
+        print(list(fields_json["features"][i]))
+        if fields_json["features"][i]["properties"]["id_crop_fact"] == None:
+            pass
+        else:
+            crop_data = lst_of_crops_dict[fields_json["features"][i]["properties"]["id_crop_fact"]]
+            for row_key in crop_data:
+                fields_json["features"][i]["properties"][row_key] = crop_data[row_key]
+    return json.dumps(fields_json)
+
+
+# def TestDb(x):
+#     jsondata = serialize("geojson", y2019ListOfFields.objects.all().using("KhvDb"))
+#     jsondata = JoinListOfCropsToFields(jsondata)
+#     # lst_of_crops_json = serialize("geojson", ListOfCrops.objects.all().using("KhvDb"))
+
+#     return HttpResponse(jsondata, "context\json")
+
 
 class MarkersMapView(TemplateView):
     template_name = "map.html"
@@ -17,10 +50,10 @@ class MarkersMapView(TemplateView):
             )
         )
         context["markers"] = json.loads(
-            serialize(
+            JoinListOfCropsToFields(serialize(
                 "geojson",
-                y2019ListOfFields.objects.using('KhvDB2019').all(),
-            )
+                y2019ListOfFields.objects.using('KhvDb').all(),
+            ))
         )
         return context
     
@@ -37,16 +70,16 @@ class MarkersMapViewTwoLayers(TemplateView):
             )
         )
         context["markers2019"] = json.loads(
-            serialize(
+            JoinListOfCropsToFields(serialize(
                 "geojson",
-                y2019ListOfFields.objects.using('KhvDb2019').all(),
-            )
+                y2019ListOfFields.objects.using('KhvDb').all(),
+            ))
         )
         context["markers2022"] = json.loads(
-            serialize(
+            JoinListOfCropsToFields(serialize(
                 "geojson",
-                y2022ListOfFields.objects.using('KhvDb2022').all(),
-            )
+                y2022ListOfFields.objects.using('KhvDb').all(),
+            ))
         )
         return context
 
@@ -60,8 +93,8 @@ class MarkersMapViewAllLayers(TemplateView):
                 **kwargs
             )
         )
-        template_out = """context["markers{1}"] = json.loads(serialize("geojson", y{1}ListOfFields.objects.using('KhvDb{1}').all()))"""
+        template_out = "context['markers{year}'] = json.loads(JoinListOfCropsToFields(serialize('geojson', y{year}ListOfFields.objects.using('KhvDb').all())))"
         for i in range(N_OF_YEARS):
             year = str(2019 + i)
-            exec(template_out.format(year, year, year))
+            exec(template_out.format(year=year))
         return context

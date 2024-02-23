@@ -18,6 +18,37 @@ class ListOfCrops(models.Model):
         db_table = "list_of_crops"
 
 
+class y2019ListOfFields(models.Model):
+    id = models.IntegerField(blank=True, primary_key=True)
+    geom = models.MultiPolygonField()
+    reestr_number = models.CharField(blank=True, null=True, max_length=500)
+    comment = models.CharField(blank=True, null=True, max_length=500)
+    intern_number = models.CharField(blank=True, null=True, max_length=500)
+    id_district = models.IntegerField(blank=True, null=True)
+    id_owner = models.IntegerField(blank=True, null=True)
+    area = models.FloatField(blank=True, null=True)
+    id_type_usage_plan = models.IntegerField(blank=True, null=True)
+    id_type_usage_fact = models.IntegerField(blank=True, null=True)
+    id_crop_plan = models.IntegerField(blank=True, null=True)
+    # id_crop_fact = models.IntegerField(blank=True, null=True)
+    id_crop_fact = models.ForeignKey(ListOfCrops, models.DO_NOTHING, blank=True, null=True, db_column='id_crop_fact')
+    id_crop_sort_plan = models.IntegerField(blank=True, null=True)
+    id_crop_sort_fact = models.IntegerField(blank=True, null=True)
+    biochem_fact = models.CharField(blank=True, null=True, max_length=500)
+    harvest_fact = models.FloatField(blank=True, null=True)
+    harvest_forecast = models.FloatField(blank=True, null=True)
+    pesticides = models.CharField(blank=True, null=True, max_length=500)
+    fertilizers = models.CharField(blank=True, null=True, max_length=500)
+    sowing_date = models.DateField(blank=True, null=True)
+    harvesе_date = models.DateField(blank=True, null=True)
+    inspected = models.BooleanField()
+    hash_unique = models.TextField(unique=True, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = '2019_list_of_fields'
+
+
 template_db_tabels_1_list_of_fields = """
 class y{1}ListOfFields(models.Model):
     id = models.IntegerField(blank=True, primary_key=True)
@@ -83,7 +114,7 @@ class y{1}ListOfFields(models.Model):
 """
 
 
-for i in range(N_OF_YEARS):
+for i in range(1, N_OF_YEARS):
     year = str(2019 + i)
     if year == "2020":
         exec(template_db_tabels_2_list_of_fields.format(year, year))
