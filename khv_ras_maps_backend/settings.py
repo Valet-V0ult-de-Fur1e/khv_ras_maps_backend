@@ -84,6 +84,18 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     },
+    "KhvDbAccounting": {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'OPTIONS': {
+            'options': '-c search_path=Accounting'
+        },
+        'NAME': 'khv',
+        'USER': 'read',
+        'PASSWORD': '1234567',
+        'HOST': '195.133.198.89',
+        'PORT': '5432'
+    }
+
 }
 
 for i in range(5):
@@ -100,8 +112,8 @@ for i in range(5):
     }
     reg = "khv"
     year = str(2019 + i)
-    name_db = reg + "DB" + year
-    DATABASES[name_db] = template_for_connection_postrgesql.copy()
+    name_db = reg.capitalize() + "Db" + year
+    DATABASES[name_db] = template_for_connection_postrgesql
     DATABASES[name_db]["OPTIONS"]["options"] = DATABASES[name_db]["OPTIONS"]["options"].format(year=year)
     DATABASES[name_db]["NAME"] = DATABASES[name_db]["NAME"].format(reg=reg)
 
