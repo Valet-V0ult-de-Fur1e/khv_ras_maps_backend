@@ -15,17 +15,34 @@ for (i = 19; i < 19+count_of_years; ++i) {
 }
 
 let feature1 = data_of_features[19]
-let list_of_using_layers = [19]
+let list_of_using_layers = ['19']
 feature1.addTo(map)
 map.fitBounds(feature1.getBounds(), { padding: [100, 100] });
 
-const update_button = document.querySelector('updateMap')
-update_button.addEventListener('click', () => {
-  // When there is a "click"
-  // it shows an alert in the browser
-  alert('Oh, you clicked me!')
-})
+let list_of_qboxes = document.querySelectorAll('input[type="checkbox"]')
 
+const update_button = document.getElementById('updateMap')
+update_button.onclick = () => {
+  // console.log(list_of_using_layers)
+  list_of_qboxes.forEach((checkbox) => {
+    // console.log(checkbox.value)
+    // console.log(checkbox.checked)
+    if (checkbox.checked){
+      if (list_of_using_layers.indexOf(checkbox.value) == -1) {
+        data_of_features[checkbox.value].addTo(map)
+        list_of_using_layers.push(checkbox.value)
+      }
+    }
+    else {
+      if (list_of_using_layers.indexOf(checkbox.value) != -1) {
+        data_of_features[checkbox.value].removeFrom(map)
+        list_of_using_layers.splice(list_of_using_layers.indexOf(checkbox.value), 1);
+      }
+    }
+  });
+}
+
+// console.log(list_of_qboxes)
 // let feature2 = data_of_features[22]
 
 

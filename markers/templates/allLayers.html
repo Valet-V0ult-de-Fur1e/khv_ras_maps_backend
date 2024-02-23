@@ -9,27 +9,30 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
+
   <label>
-    <input type="checkbox" id="layer2019" name="2019" value="layer2019" checked=true/>
+    <input type="checkbox" id="layer1" value="19" checked=true/>
     2019
   </label>
   <label>
-    <input type="checkbox" id="layer2020" name="2020" value="layer2020" />
+    <input type="checkbox" id="layer2" value="20" />
     2020
   </label>
   <label>
-    <input type="checkbox" id="layer2021" name="2021" value="layer2021" />
+    <input type="checkbox" id="layer3" value="21" />
     2021
   </label>
   <label>
-    <input type="checkbox" id="layer2022" name="2022" value="layer2022" />
+    <input type="checkbox" id="layer4"value="22" />
     2022
   </label>
   <label>
-    <input type="checkbox" id="layer2023" name="2023" value="layer2023" />
+    <input type="checkbox" id="layer5" value="23" />
     2023
   </label>
-  <button name="updateMap">Обновить</button>
+  <button id="updateMap">Обновить</button>
+
+  
   {{ markers2019|json_script:"markers-data-19" }}
   {{ markers2020|json_script:"markers-data-20" }}
   {{ markers2021|json_script:"markers-data-21" }}
