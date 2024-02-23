@@ -1,14 +1,9 @@
-from django.views.generic.base import (
-    TemplateView,
-)
+from django.views.generic.base import (TemplateView)
 import json
-
-from django.core.serializers import (
-    serialize,
-)
-
+from django.core.serializers import (serialize)
 from markers.models import *
 import json
+from khv_ras_maps_backend.settings import N_OF_YEARS
 
 class MarkersMapView(TemplateView):
     template_name = "map.html"
@@ -59,24 +54,14 @@ class MarkersMapViewTwoLayers(TemplateView):
 class MarkersMapViewAllLayers(TemplateView):
     template_name = "allLayers.html"
 
-    def get_context_data(
-        self, **kwargs
-    ):
+    def get_context_data(self, **kwargs):
         context = (
             super().get_context_data(
                 **kwargs
             )
         )
-        context["markers2019"] = json.loads(
-            serialize(
-                "geojson",
-                y2019ListOfFields.objects.using('khvDB2019').all(),
-            )
-        )
-        context["markers2022"] = json.loads(
-            serialize(
-                "geojson",
-                y2022ListOfFields.objects.using('khvDB2022').all(),
-            )
-        )
+        template_out = """context["markers{1}"] = json.loads(serialize("geojson", y{1}ListOfFields.objects.using('khvDB{1}').all()))"""
+        for i in range(N_OF_YEARS):
+            year = str(2019 + i)
+            exec(template_out.format(year, year, year))
         return context

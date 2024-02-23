@@ -9,8 +9,11 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
-  {{ markers2019|json_script:"markers-data-1" }}
-  {{ markers2022|json_script:"markers-data-2" }}
+  {{ markers2019|json_script:"markers-data-19" }}
+  {{ markers2020|json_script:"markers-data-20" }}
+  {{ markers2021|json_script:"markers-data-21" }}
+  {{ markers2022|json_script:"markers-data-22" }}
+  {{ markers2023|json_script:"markers-data-23" }}
   <div id="map"></div>
   <script src="{% static 'mapAllLayers.js' %}"></script>
 </body>
