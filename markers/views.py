@@ -60,16 +60,8 @@ class MarkersMapViewAllLayers(TemplateView):
                 **kwargs
             )
         )
-        context["markers2019"] = json.loads(
-            serialize(
-                "geojson",
-                y2019ListOfFields.objects.using('KhvDb2019').all(),
-            )
-        )
-        context["markers2022"] = json.loads(
-            serialize(
-                "geojson",
-                y2022ListOfFields.objects.using('KhvDb2022').all(),
-            )
-        )
+        template_out = """context["markers{1}"] = json.loads(serialize("geojson", y{1}ListOfFields.objects.using('KhvDB{1}').all()))"""
+        for i in range(N_OF_YEARS):
+            year = str(2019 + i)
+            exec(template_out.format(year, year, year))
         return context
