@@ -50,7 +50,33 @@ class MarkersMapViewTwoLayers(TemplateView):
         context["markers2022"] = json.loads(
             serialize(
                 "geojson",
-                y2020ListOfFields.objects.using('khvDB2020').all(),
+                y2022ListOfFields.objects.using('khvDB2022').all(),
+            )
+        )
+        return context
+
+
+class MarkersMapViewAllLayers(TemplateView):
+    template_name = "allLayers.html"
+
+    def get_context_data(
+        self, **kwargs
+    ):
+        context = (
+            super().get_context_data(
+                **kwargs
+            )
+        )
+        context["markers2019"] = json.loads(
+            serialize(
+                "geojson",
+                y2019ListOfFields.objects.using('khvDB2019').all(),
+            )
+        )
+        context["markers2022"] = json.loads(
+            serialize(
+                "geojson",
+                y2022ListOfFields.objects.using('khvDB2022').all(),
             )
         )
         return context
