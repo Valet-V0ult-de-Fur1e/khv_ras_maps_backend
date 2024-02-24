@@ -23,10 +23,7 @@ let list_of_qboxes = document.querySelectorAll('input[type="checkbox"]')
 
 const update_button = document.getElementById('updateMap')
 update_button.onclick = () => {
-  // console.log(list_of_using_layers)
   list_of_qboxes.forEach((checkbox) => {
-    // console.log(checkbox.value)
-    // console.log(checkbox.checked)
     if (checkbox.checked){
       if (list_of_using_layers.indexOf(checkbox.value) == -1) {
         data_of_features[checkbox.value].addTo(map)
@@ -41,24 +38,6 @@ update_button.onclick = () => {
     }
   });
 }
-
-// console.log(list_of_qboxes)
-// let feature2 = data_of_features[22]
-
-
-// for (i = 21; i < 19+count_of_years - 2; ++i) {
-//   L.geoJson(data_of_years[i+1]).on('click', function(e){
-//     var popLocation = e.latlng;
-//     L.popup()
-//     .setLatLng(popLocation)
-//     .setContent(
-//       "<div>20" + i + "</div>" +
-//       "<div>polygon id:    " + JSON.stringify(e.sourceTarget.feature["id"]) + "\n" + "</div>"+
-//       "<div>area:    " + JSON.stringify(e.sourceTarget.feature.properties["area"]) + "</div>"+
-//       "<div>reestr_number:    " + JSON.stringify(e.sourceTarget.feature.properties["reestr_number"]) + "</div>" +
-//       "<div>comment:    " + JSON.stringify(e.sourceTarget.feature.properties["comment"]) + "</div>" 
-//       ).openOn(map);}).addTo(map)
-// }
 
 function getRandomArbitrary() {
   maximum = 255
