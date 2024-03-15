@@ -1,7 +1,7 @@
 from django.views.generic.base import (TemplateView)
 import json
 from django.core.serializers import (serialize)
-from django.http import HttpResponse
+from django.http import JsonResponse
 from markers.models import *
 import json
 from khv_ras_maps_backend.settings import N_OF_YEARS
@@ -13,14 +13,14 @@ def JoinListOfCropsToFields(fields_json: dict) -> dict:
     lst_of_crops_json = json.loads(serialize("geojson", ListOfCrops.objects.all().using("KhvDb")))
     lst_of_crops_dict = dict()
 
-    print(lst_of_crops_json["features"])
+    # print(lst_of_crops_json["features"])
 
     for i in lst_of_crops_json["features"]:
-        print(i)
+        # print(i)
         lst_of_crops_dict[i["id"]] = i["properties"]
 
     for i in range(len(fields_json["features"])):
-        print(list(fields_json["features"][i]))
+        # print(list(fields_json["features"][i]))
         if fields_json["features"][i]["properties"]["id_crop_fact"] == None:
             pass
         else:
@@ -29,13 +29,6 @@ def JoinListOfCropsToFields(fields_json: dict) -> dict:
                 fields_json["features"][i]["properties"][row_key] = crop_data[row_key]
     return json.dumps(fields_json)
 
-
-# def TestDb(x):
-#     jsondata = serialize("geojson", y2019ListOfFields.objects.all().using("KhvDb"))
-#     jsondata = JoinListOfCropsToFields(jsondata)
-#     # lst_of_crops_json = serialize("geojson", ListOfCrops.objects.all().using("KhvDb"))
-
-#     return HttpResponse(jsondata, "context\json")
 
 
 class MarkersMapView(TemplateView):
@@ -98,3 +91,12 @@ class MarkersMapViewAllLayers(TemplateView):
             year = str(2019 + i)
             exec(template_out.format(year=year))
         return context
+    
+
+def index(request):
+    context = {}
+    template_out = "context['markers{year}'] = json.loads(JoinListOfCropsToFields(serialize('geojson', y{year}ListOfFields.objects.using('KhvDb').all())))"
+    for i in range(N_OF_YEARS):
+        year = str(2019 + i)
+        exec(template_out.format(year=year))
+    return JsonResponse(context)

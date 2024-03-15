@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -73,6 +74,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "khv_ras_maps_backend.wsgi.application"
 
+CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = ['*']
+CORS_ALLOW_HEADERS = "*"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

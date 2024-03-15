@@ -1,6 +1,6 @@
 from django.urls import path
 
-from markers.views import MarkersMapView, MarkersMapViewTwoLayers, MarkersMapViewAllLayers
+from markers.views import MarkersMapView, MarkersMapViewTwoLayers, MarkersMapViewAllLayers, index
 
 app_name = "markers"
 
@@ -13,5 +13,8 @@ urlpatterns = [
     ),
     path(
         "mapAllLayers/", MarkersMapViewAllLayers.as_view()
+    ),
+    path(
+        "getData/", index
     ),
 ]
